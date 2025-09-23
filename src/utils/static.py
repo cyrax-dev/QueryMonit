@@ -1,3 +1,4 @@
+import re
 from json import load
 from pathlib import Path
 
@@ -15,21 +16,22 @@ class Static:
 
     @staticmethod
     def get_server_time(keywords: str) -> str:
-        """Get server time."""
+        """Get server time from a string."""
         if not keywords:
             return "🕒 00:00"
 
-        server_time = keywords.split(",")[-1].strip()
+        match = re.search(r"\b\d{1,2}:\d{2}\b", keywords)
+        server_time = match.group(0) if match else "00:00"
 
         if "05:00" <= server_time < "20:00":
             return f"🌤️ {server_time}"
         return f"🌙 {server_time}"
 
     @staticmethod
-    def get_server_queue(keywords: str) -> str:
-        """Get server queue."""
+    def get_server_queue(keywords: str) -> int:
+        """Get server queue from a string."""
         if not keywords:
             return 0
 
-        server_queue = keywords.split(",")[-5].strip()
-        return int("".join(c for c in server_queue if c.isdigit()))
+        match = re.search(r"lqs(\d+)", keywords)
+        return int(match.group(1)) if match else 0
