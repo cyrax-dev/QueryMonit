@@ -1,0 +1,9 @@
+[
+  {
+    "name": "ServerName",
+    "token": "",
+    "ip": "127.0.0.1",
+    "query_port": 27018,
+    "status_template": "🟢 {players}/{slots} | {time} | ➕{queue}"
+  }
+]
