@@ -1,7 +1,7 @@
 # Discord Bot for Monitoring DayZ Servers
 > A simple and effective Discord bot that extracts data from the server in real time via **Query Port**.
 
----
+
 
 ### 🚀 Features
 - **Multibot support** — run multiple bots at the same time to monitor several servers.
@@ -10,9 +10,8 @@
 - **Slots** — shows available and occupied slots.
 - **In-game time** — displays the current time of day (day/night) on the server.
 - **Queue info** — shows how many players are in the queue.
+- **Templates** — customize status messages like "🟢 {players}/{slots} | {time} | ➕{queue}"
 - **Update interval** — 10 seconds.
-
----
 
 ### ➕ Customisation
 > All bot settings are stored in the **`servers.json`** file in the project root.
@@ -20,21 +19,19 @@
 ```json
 [
   {
-    "name": "ServerName",
+    "name": "Chernarus",
     "token": "BotToken",
-    "ip": "ipv4",
-    "query_port": 2303
+    "ip": "127.0.0.1",
+    "query_port": 27017
   },
   {
-    "name": "ServerName",
+    "name": "Livonia",
     "token": "BotToken",
-    "ip": "ipv4",
-    "query_port": 2403
+    "ip": "127.0.0.1",
+    "query_port": 27018
   }
 ]
 ```
-
----
 
 ### 🎉 Launch
 Run **`start.bat`** or **`QueryMonit.exe`** to start the bot.
