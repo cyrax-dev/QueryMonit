@@ -1,0 +1,10 @@
+[project]
+name = "querymonit"
+version = "1.0"
+description = "Run multiple Discord bots from a single application to monitor DayZ servers"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "disnake>=2.11.0",
+    "python-a2s>=1.4.1",
+]
