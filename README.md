@@ -23,13 +23,15 @@
     "name": "Chernarus",
     "token": "BotToken",
     "ip": "127.0.0.1",
-    "query_port": 27017
+    "query_port": 27017,
+    "status_template": "🟢 {players}/{slots} | {time} | ➕{queue}"
   },
   {
     "name": "Livonia",
     "token": "BotToken",
     "ip": "127.0.0.1",
-    "query_port": 27018
+    "query_port": 27018,
+    "status_template": "🟢 {players}/{slots} | {time} | ➕{queue}"
   }
 ]
 ```
