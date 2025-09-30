@@ -1,7 +1,8 @@
 # Discord Bot for Monitoring DayZ Servers
 > A simple and effective Discord bot that extracts data from the server in real time via **Query Port**.
 
-
+### ⚡ Discord bot status
+![](docs/status.png)
 
 ### 🚀 Features
 - **Multibot support** — run multiple bots at the same time to monitor several servers.
