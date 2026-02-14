@@ -1,6 +1,5 @@
 @echo off
 chcp 65001 > nul
-title Monitoring Bot
 
 echo Install UV...
 echo ---------------------------------
@@ -13,5 +12,6 @@ set Path=C:\Users\%USERNAME%\.local\bin;%Path%
 cls
 
 echo Starting...
-uv run src/main.py
+rmdir /s /q .venv
+uv run python -B src/main.py
 pause

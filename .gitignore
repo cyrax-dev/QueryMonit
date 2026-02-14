@@ -10,3 +10,4 @@ setup.py
 
 # Virtual environments
 .venv
+.vscode

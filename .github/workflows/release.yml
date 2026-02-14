@@ -1,0 +1,49 @@
+name: Build & Release EXE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Sync dependencies
+        run: uv sync
+
+      - name: Build exe
+        run: uv run cxfreeze build
+
+      - name: Remove license file
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path build -Recurse -Filter "frozen_application_license.txt" | Remove-Item -Force
+
+      - name: Zip build
+        run: powershell Compress-Archive build\exe.win-amd64-3.12 QueryMonit.zip
+
+      - name: Get version from uv
+        id: version
+        shell: pwsh
+        run: |
+          $version = (uv version).Split()[-1]
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: ${{ steps.version.outputs.VERSION }}
+          body_path: CHANGELOG.md
+          files: QueryMonit.zip
