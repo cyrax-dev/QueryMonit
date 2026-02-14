@@ -33,7 +33,8 @@ jobs:
       - name: Rename build folder
         shell: pwsh
         run: |
-          Rename-Item build\exe.win-amd64-3.12 build\QueryMonit
+          Remove-Item build\QueryMonit -Recurse -Force -ErrorAction SilentlyContinue
+          Move-Item build\exe.win-amd64-3.12 build\QueryMonit
 
       - name: Zip build
         shell: pwsh
