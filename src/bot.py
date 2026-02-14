@@ -1,50 +1,42 @@
-import asyncio
 from typing import Any
 
 from disnake import CustomActivity
 from disnake.ext import commands, tasks
 
-from server import GameServer
-from utils import log
+from core import A2SUnavailableError, log
+from services import GameServerService
 
 
 class Bot(commands.InteractionBot):
     """Class for bot."""
 
-    def __init__(self, server: dict[str, Any]) -> None:
+    def __init__(self, server: dict[str, Any], game_server: GameServerService) -> None:
         """Initialize bot."""
-        self.ipv4 = server["ip"]
-        self.port = server["query_port"]
-        self.template = server["status_template"]
         super().__init__()
+        self.game_server = game_server
+        self.ipv4 = server["ip"]
+        self.port = server["port"]
+        self.template = server["template"]
+        self.offline = server["offline"]
 
     async def on_ready(self) -> None:
         """Event handler called when the bot is ready."""
         log.info("%s connected", self.user.display_name)
-        await asyncio.sleep(5)
         await self.update_status_loop.start()
 
     async def update_status(self) -> None:
         """Update the bot's presence status with current server statistics."""
         try:
-            game_server = await GameServer.get_server_info(self.ipv4, self.port)
-            status = self.template.format(
-                players=game_server.players,
-                slots=game_server.slots,
-                queue=game_server.queue,
-                time=game_server.time,
-            ) if game_server.status else "🔴 Server OFF"
+            info = await self.game_server.get_info(self.ipv4, self.port)
+            status = self.template.format(players=info.players, slots=info.slots, queue=info.queue, time=info.time)
 
-            await self.change_presence(activity=CustomActivity(name=status))
-            log.info("%s: %s", self.user.display_name, status)
+        except A2SUnavailableError:
+            status = self.offline
 
-        except Exception as e:
-            log.error("Failed to update status", exc_info=e)
-            log.warning("Restarting bot...")
-            await asyncio.sleep(10)
-            await self.update_status()
+        await self.change_presence(activity=CustomActivity(name=status))
+        log.info("%s: %s", self.user.display_name, status)
 
-    @tasks.loop(seconds=10)
+    @tasks.loop(seconds=5)
     async def update_status_loop(self) -> None:
-        """Periodically update the bot's status every 10 seconds."""
+        """Update the bot's presence status with current server statistics."""
         await self.update_status()
