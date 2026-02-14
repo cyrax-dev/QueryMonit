@@ -30,8 +30,15 @@ jobs:
         run: |
           Get-ChildItem -Path build -Recurse -Filter "frozen_application_license.txt" | Remove-Item -Force
 
+      - name: Rename build folder
+        shell: pwsh
+        run: |
+          Rename-Item build\exe.win-amd64-3.12 QueryMonit
+
       - name: Zip build
-        run: powershell Compress-Archive build\exe.win-amd64-3.12 QueryMonit.zip
+        shell: pwsh
+        run: |
+          Compress-Archive QueryMonit QueryMonit.zip
 
       - name: Get version from uv
         id: version
