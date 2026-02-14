@@ -10,6 +10,8 @@ from services import GameServerService
 class Bot(commands.InteractionBot):
     """Class for bot."""
 
+    TASK_UPDATE_STATUS_INTERVAL = 15
+
     def __init__(self, server: dict[str, Any], game_server: GameServerService) -> None:
         """Initialize bot."""
         super().__init__()
@@ -36,7 +38,7 @@ class Bot(commands.InteractionBot):
         await self.change_presence(activity=CustomActivity(name=status))
         log.info("%s: %s", self.user.display_name, status)
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=TASK_UPDATE_STATUS_INTERVAL)
     async def update_status_loop(self) -> None:
         """Update the bot's presence status with current server statistics."""
         await self.update_status()
