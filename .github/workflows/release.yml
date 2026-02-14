@@ -33,12 +33,12 @@ jobs:
       - name: Rename build folder
         shell: pwsh
         run: |
-          Rename-Item build\exe.win-amd64-3.12 QueryMonit
+          Rename-Item build\exe.win-amd64-3.12 build\QueryMonit
 
       - name: Zip build
         shell: pwsh
         run: |
-          Compress-Archive QueryMonit QueryMonit.zip
+          Compress-Archive build\QueryMonit QueryMonit.zip
 
       - name: Get version from uv
         id: version
